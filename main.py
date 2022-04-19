@@ -43,7 +43,7 @@ def parens_match_iterative(mylist):
     False
     """
     ### TODO
-    pass
+    return iterate(parens_update, 0, mylist) == 0 
 
 
 def parens_update(current_output, next_input):
@@ -59,7 +59,17 @@ def parens_update(current_output, next_input):
       the updated value of `current_output`
     """
     ###TODO
-    pass
+    if current_output == -math.inf:
+        return current_output
+    if next_input == '(':
+        return current_output + 1
+    elif next_input == ')':          
+        if current_output <= 0:      
+            return -math.inf
+        else:                        
+            return current_output - 1
+    else:                           
+        return current_output
 
 
 def test_parens_match_iterative():
@@ -88,7 +98,9 @@ def parens_match_scan(mylist):
     
     """
     ###TODO
-    pass
+    lg, last = scan(plus, 0, list(map(paren_map, mylist)))
+    print(lg, last)
+    return last == 0 and reduce(min_f, 0, history) >= 0
 
 def scan(f, id_, a):
     """
@@ -161,7 +173,24 @@ def parens_match_dc_helper(mylist):
       parens_match_dc to return the final True or False value
     """
     ###TODO
-    pass
+        if len(mylist) == 0:
+        return [0,0]
+    elif len(mylist) == 1:
+        if mylist[0] == '(':
+            return (0, 1) 
+        elif mylist[0] == ')':
+            return (1, 0)    
+        else:
+            return (0, 0)
+    right1,left1 = parens_match_dc_helper(mylist[:len(mylist)//2])
+    right2,left2 = parens_match_dc_helper(mylist[len(mylist)//2:])
+   
+    if left1 > right2:
+        return (right1, (left1 - right2) + left2)
+    else:
+        return ( (right2 - left1) + right1,   left2)
+    
+    
     
 
 def test_parens_match_dc():
